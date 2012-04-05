@@ -7,3 +7,7 @@ container:stop
 exit
 container:stop
 container:start
+container:stop
+exit
+~eclipse
+exit

@@ -19,6 +19,25 @@
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.liftweb/lift-json_2.9.1/jars/lift-json_2.9.1-2.4-M4.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/com.thoughtworks.paranamer/paranamer/jars/paranamer-2.3.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.slf4j/slf4j-nop/jars/slf4j-nop-1.6.0.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/javax.servlet/servlet-api/jars/servlet-api-2.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.java.dev.jets3t/jets3t/jars/jets3t-0.8.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.1.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/commons-httpclient/commons-httpclient/jars/commons-httpclient-3.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/com.jamesmurty.utils/java-xmlbuilder/jars/java-xmlbuilder-0.4.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.scala-tools.time/time_2.9.1/jars/time_2.9.1-0.5.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.bowlerframework/squeryl-mapper_2.9.1/jars/squeryl-mapper_2.9.1-0.5.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/c3p0/c3p0/jars/c3p0-0.9.1.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.squeryl/squeryl_2.9.1/jars/squeryl_2.9.1-0.9.5-RC1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/cglib/cglib-nodep/jars/cglib-nodep-2.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.bowlerframework/persistence-mapper_2.9.1/jars/persistence-mapper_2.9.1-0.5.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/com.h2database/h2/jars/h2-1.2.144.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/postgresql/postgresql/jars/postgresql-8.4-701.jdbc4.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.imgscalr/imgscalr-lib/jars/imgscalr-lib-4.1.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-http_2.9.1/jars/dispatch-http_2.9.1-0.8.7.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-core_2.9.1/jars/dispatch-core_2.9.1-0.8.7.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.1.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.1.2.jar" kind="lib"></classpathentry>
+  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-futures_2.9.1/jars/dispatch-futures_2.9.1-0.8.7.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.scalatra/scalatra-scalatest_2.9.1/jars/scalatra-scalatest_2.9.1-2.1.0-SNAPSHOT.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.scalatra/scalatra-test_2.9.1/jars/scalatra-test_2.9.1-2.1.0-SNAPSHOT.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.clapper/grizzled-slf4j_2.9.1/jars/grizzled-slf4j_2.9.1-0.6.6.jar" kind="lib"></classpathentry>
@@ -36,12 +55,6 @@
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.eclipse.jetty/jetty-io/jars/jetty-io-8.1.0.v20120127.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.mockito/mockito-all/jars/mockito-all-1.8.5.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.1.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-http_2.9.1/jars/dispatch-http_2.9.1-0.8.5.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-core_2.9.1/jars/dispatch-core_2.9.1-0.8.5.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.1.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.1.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.1.1.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/net.databinder/dispatch-futures_2.9.1/jars/dispatch-futures_2.9.1-0.8.5.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.scalatest/scalatest_2.9.1/jars/scalatest_2.9.1-1.6.1.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/junit/junit/jars/junit-4.10.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.hamcrest/hamcrest-core/jars/hamcrest-core-1.1.jar" kind="lib"></classpathentry>
@@ -57,7 +70,6 @@
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.scala-tools.testing/test-interface/jars/test-interface-0.5.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.specs2/scalaz-core_2.9.0/jars/scalaz-core_2.9.0-6.0.RC2.jar" kind="lib"></classpathentry>
   <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/org.hamcrest/hamcrest-all/jars/hamcrest-all-1.1.jar" kind="lib"></classpathentry>
-  <classpathentry path="/Volumes/Database/Users/BBC/.ivy2/cache/javax.servlet/servlet-api/jars/servlet-api-2.5.jar" kind="lib"></classpathentry>
   <classpathentry path="org.scala-ide.sdt.launching.SCALA_CONTAINER" kind="con"></classpathentry>
   <classpathentry path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6" kind="con"></classpathentry>
   <classpathentry path=".target/scala-2.9.1/classes" kind="output"></classpathentry>

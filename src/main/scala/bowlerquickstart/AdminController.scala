@@ -20,5 +20,5 @@ class AdminController extends Controller with ParameterMapper with Validations w
  // views are resolved by view-root ("/view" on the classpath by default) + HTTP Method + path,
 // in this case /views/GET/index. The ending of the template file (mustache, ssp, jade or scaml) will be auto-resolved in the order mentioned here.
 // for named params, the ":" of the Scalatra route definition will be replaced by "_" when looking up on the classpath.
-  def `GET /` = render
+  def `GET /admin` = render
 }

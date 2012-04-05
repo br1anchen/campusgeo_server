@@ -11,3 +11,4 @@ container:stop
 exit
 ~eclipse
 exit
+container:start

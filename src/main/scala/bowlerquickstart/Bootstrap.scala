@@ -20,7 +20,7 @@ class Bootstrap{
 
 
   // I think we're ready to start and instantiate our Controller.
-  val controller = new AdminController with BasicAuth {
+  val adminController = new AdminController with BasicAuth {
     val user :String = "campusgeo"
     val password :String = "admintest" 
   }

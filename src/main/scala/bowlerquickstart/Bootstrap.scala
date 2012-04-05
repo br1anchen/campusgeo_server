@@ -15,7 +15,7 @@ class Bootstrap{
 
 
   // I think we're ready to start and instantiate our Controller.
-  val controller = new MyController
+  val controller = new AdminController
 	
 	
   // allow template reload during development - remove these lines in production for better performance

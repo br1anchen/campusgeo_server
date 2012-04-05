@@ -42,10 +42,18 @@ class Bootstrap{
   def makeTables = {
     val session = SessionFactory.newSession
     session.bindToCurrentThread
+    try{
     Tables.create
     println("Database created")
-    session.close
-    session.unbindFromCurrentThread
+    }catch{
+      case e: Exception => {
+        println("database exists!" + e.getMessage)
+      }
+    }finally{
+      session.close
+      session.unbindFromCurrentThread
+    }
+    
   }
   
   def setupC3p0 = {

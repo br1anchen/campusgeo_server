@@ -12,3 +12,7 @@ exit
 ~eclipse
 exit
 container:start
+exit
+container:start
+container:stop
+exit

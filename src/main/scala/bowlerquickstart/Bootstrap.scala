@@ -7,16 +7,19 @@ import org.squeryl.Session
 import org.squeryl.adapters.PostgreSqlAdapter
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import bowlerquickstart.service.Tables
+import bowlerquickstart.service._
 import bowlerquickstart.model.User
 import bowlerquickstart.model.GeoInformation
 import bowlerquickstart.model.GeoInformation
 import bowlerquickstart.model.GeoInformation
 import bowlerquickstart.model.SocialNetwork
+import bowlerquickstart.model.Appointment
 
 /**
  * This class acts as the starting point and bootstrap point for our application
  */
-class Bootstrap{
+class Bootstrap(userStore: UserStore = new DBUserStore){
+  def this() = this(new DBUserStore)
   // parent layout
   val parentLayout = DefaultLayout("default", "doLayout", None, None)
 
@@ -25,10 +28,11 @@ class Bootstrap{
 
 
   // I think we're ready to start and instantiate our Controller.
-  val adminController = new AdminController with BasicAuth {
+  val adminController = new AdminController(userStore) with BasicAuth {
     val user :String = "campusgeo"
     val password :String = "admintest" 
   }
+  val userController = new UserController(userStore)
 	
 	
   // allow template reload during development - remove these lines in production for better performance
@@ -89,7 +93,7 @@ class Bootstrap{
   }
 }
 
-trait userStore
+trait UserStore
 {
   def addUser(user:User) : User
   def deleteUser(username:String)
@@ -97,18 +101,27 @@ trait userStore
   def checkUser(username:String,password:String) : Boolean
 }
 
-trait geoInformationStore
+trait GeoInformationStore
 {
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def updateGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def checkGeoInfo(bindUser:String) : GeoInformation
 }
 
-trait socialNetworkStore
+trait SocialNetworkStore
 {
   def addSocialNet(socialnet:SocialNetwork) : SocialNetwork
   def deleteSocialNet(host:String,friend:String)
   def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork
   def checkSocialNet(host:String,friend:String) : Boolean
   def getAllSocialNet(host:String) : Seq[SocialNetwork]
+}
+
+trait AppointmentStore
+{
+  def addAppointment(appointment:Appointment) : Appointment
+  def deleteAppointment(host:String,dater:String,time:String)
+  def updateAppointment(appointment:Appointment) : Appointment
+  def getAppointment(host:String,dater:String) : Appointment
+  def getAllAppointment(bindUser:String) : Seq[Appointment]
 }

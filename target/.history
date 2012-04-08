@@ -19,3 +19,10 @@ exit
 container:start
 exit
 container:start
+~package
+container:start
+~package
+exit
+container:start
+exit
+container:start

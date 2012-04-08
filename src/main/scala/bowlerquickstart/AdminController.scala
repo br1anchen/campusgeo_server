@@ -3,6 +3,7 @@ package bowlerquickstart
 import org.bowlerframework.controller.{Controller,FunctionNameConventionRoutes}
 import org.bowlerframework.model.{ ParameterMapper, Validations}
 import org.bowlerframework.view.{Renderable}
+import org.bowlerframework.squeryl.SquerylController
 
 /**
  * 
@@ -13,7 +14,7 @@ import org.bowlerframework.view.{Renderable}
  * - Renderable: allows you to render View Model objects.
  */
 
-class AdminController extends Controller with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes {
+class AdminController(userStore:UserStore) extends SquerylController with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes {
 
 
   // simple, no args render, just renders the root view of /views/GET/index (or http 204 for JSON)

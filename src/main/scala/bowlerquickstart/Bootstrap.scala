@@ -7,6 +7,11 @@ import org.squeryl.Session
 import org.squeryl.adapters.PostgreSqlAdapter
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import bowlerquickstart.service.Tables
+import bowlerquickstart.model.User
+import bowlerquickstart.model.GeoInformation
+import bowlerquickstart.model.GeoInformation
+import bowlerquickstart.model.GeoInformation
+import bowlerquickstart.model.SocialNetwork
 
 /**
  * This class acts as the starting point and bootstrap point for our application
@@ -82,4 +87,28 @@ class Bootstrap{
 
     cpds
   }
+}
+
+trait userStore
+{
+  def addUser(user:User) : User
+  def deleteUser(username:String)
+  def updateUser(user:User) : User
+  def checkUser(username:String,password:String) : Boolean
+}
+
+trait geoInformationStore
+{
+  def addGeoInfo(geoinfo:GeoInformation) : GeoInformation
+  def updateGeoInfo(geoinfo:GeoInformation) : GeoInformation
+  def checkGeoInfo(bindUser:String) : GeoInformation
+}
+
+trait socialNetworkStore
+{
+  def addSocialNet(socialnet:SocialNetwork) : SocialNetwork
+  def deleteSocialNet(host:String,friend:String)
+  def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork
+  def checkSocialNet(host:String,friend:String) : Boolean
+  def getAllSocialNet(host:String) : Seq[SocialNetwork]
 }

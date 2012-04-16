@@ -121,7 +121,7 @@ trait AppointmentStore
 {
   def addAppointment(appointment:Appointment) : Appointment
   def deleteAppointment(host:String,dater:String,time:String)
-  def updateAppointment(appointment:Appointment) : Appointment
-  def getAppointment(host:String,dater:String) : Appointment
+  def updateAppointment(appointment:Appointment,oldTime:String) : Appointment
+  def getAppointment(host:String,dater:String) : Seq[Appointment]
   def getAllAppointment(bindUser:String) : Seq[Appointment]
 }

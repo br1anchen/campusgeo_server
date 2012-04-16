@@ -15,6 +15,11 @@ import bowlerquickstart.model.GeoTypes
 import java.text.SimpleDateFormat
 import org.joda.time.format.DateTimeFormatter
 import org.joda.time.format.DateTimeFormat
+import bowlerquickstart.SocialNetworkStore
+import bowlerquickstart.model.SocialNetwork
+import bowlerquickstart.model.SocialTypes
+import bowlerquickstart.AppointmentStore
+import bowlerquickstart.model.Appointment
 
 class DBTableStore {
   import Tables._
@@ -61,7 +66,7 @@ class DBUserStore extends UserStore{
      user
   }
   
-  def checkUser(username:String,password:String) = {
+  def checkUser(username:String,password:String) : Boolean = {
     inTransaction{
       val usernameResult = Tables.users.where(u => u.userName === username)
       if(usernameResult.nonEmpty)
@@ -125,6 +130,117 @@ class DBGeoInformationStore extends GeoInformationStore{
   }
 }
 
+class DBSocialNetworkStore extends SocialNetworkStore{
+  import Tables._
+  implicit def db2socialnet(socialnet:DBSocialNetwork) = new SocialNetwork(socialnet.host,socialnet.friend,SocialTypes.getTypeByString(socialnet.toString()).id)
+  implicit def socialnet2db(socialnet:SocialNetwork) = new DBSocialNetwork(0,socialnet.host,socialnet.friend,SocialTypes.getTypeById(socialnet.socialType).toString,new Timestamp(new DateTime().getMillis()))
+  
+  def addSocialNet(socialnet:SocialNetwork) : SocialNetwork ={
+     inTransaction{
+      val newSocialNet = Tables.socialnets.insert(socialnet2db(socialnet))
+      db2socialnet(newSocialNet)
+    }
+  }
+  
+  def deleteSocialNet(host:String,friend:String) ={
+    inTransaction{
+      Tables.socialnets.deleteWhere(sn => (sn.host === host) and (sn.friend === friend))
+    }
+  }
+  def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork ={
+    inTransaction{
+      Tables.socialnets.update(sn =>
+    		  					where(sn.host === socialnet.host and sn.friend === socialnet.friend)
+    		  					set(sn.socialType := SocialTypes.getTypeById(socialnet.socialType).toString(),
+    		  					    sn.created := new Timestamp(new Date().getTime()))
+    		  				)
+    }
+    socialnet
+  }
+  def checkSocialNet(host:String,friend:String) : Boolean ={
+    val socialnetResult = Tables.socialnets.where(sn => sn.host === host and sn.friend === friend)
+    if(socialnetResult.nonEmpty){true}else{false}
+  }
+  
+  def getAllSocialNet(host:String) : Seq[SocialNetwork] ={
+    inTransaction{
+      val socialList = from(Tables.socialnets)(sn => where(sn.host === host) select(sn) orderBy(sn.created asc))
+      socialList.map(sn => db2socialnet(sn)).toSeq
+    }
+  }
+}
+
+class DBAppointmentStore extends AppointmentStore{
+  import Tables._
+  implicit def db2dating(dating:DBAppointment) = new Appointment(dating.host,
+		  														dating.dater,
+		  														new SimpleDateFormat("yyyy-MM-dd").format(dating.time),
+		  														new SimpleDateFormat("HH:mm").format(dating.time),
+		  														dating.latitude,
+		  														dating.longitude)
+  implicit def dating2db(dating:Appointment) = new DBAppointment(0,
+		  														dating.host,
+		  														dating.dater,
+		  														new Timestamp(new Date().getTime()),
+		  														dating.latitude,
+		  														dating.longitude)
+  
+  def addAppointment(appointment:Appointment) : Appointment ={
+    inTransaction{
+      val newAppointment = Tables.appointments.insert(dating2db(appointment))
+      db2dating(newAppointment)
+    }
+  }
+  
+  def deleteAppointment(host:String,dater:String,time:String) ={
+    val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+    val newDate:DateTime = formatter.parseDateTime(time)
+    inTransaction{
+      Tables.appointments.deleteWhere(ap => (ap.host === host) and (ap.dater === ap.dater) and (ap.time === new Timestamp(newDate.getMillis())))
+    }
+  }
+  
+  def updateAppointment(appointment:Appointment,oldTime:String) : Appointment ={
+    val dateString:String = appointment.date + " " + appointment.time
+    val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+    val newDate:DateTime = formatter.parseDateTime(dateString)
+    val oldDate:DateTime = formatter.parseDateTime(oldTime)
+    inTransaction{
+      Tables.appointments.update(ap => 
+        						where(ap.host === appointment.host and ap.dater === appointment.dater and ap.time === new Timestamp(oldDate.getMillis()))
+        						set(ap.time := new Timestamp(newDate.getMillis()))
+        						)
+    }
+    appointment
+  }
+  
+  def getAppointment(host:String,dater:String) : Seq[Appointment] ={
+    inTransaction{
+      val datings = from(Tables.appointments)(ap => where(ap.host === host and ap.dater === dater) select(ap) orderBy(ap.time asc)).toSeq
+      val nextdatings = datings.filter(d => 
+        if(d.time.compareTo(new Date()) >= 0){
+        true
+        }else{
+        false
+        })
+      nextdatings.map(nd => db2dating(nd)).toSeq
+    }
+  }
+  
+  def getAllAppointment(bindUser:String) : Seq[Appointment] ={
+    inTransaction{
+      val datings = from(Tables.appointments)(ap => where(ap.host === bindUser or ap.dater === bindUser) select(ap) orderBy(ap.time asc)).toSeq
+      val nextdatings = datings.filter(d => 
+        if(d.time.compareTo(new Date()) >= 0){
+        true
+        }else{
+        false
+        })
+      nextdatings.map(nd => db2dating(nd)).toSeq
+    }
+  }
+}
+
 case class DBUser(
     val id:Long, val userName:String, 
     val password:String, val role:String,
@@ -156,6 +272,6 @@ case class DBAppointment(
 object Tables extends Schema{
   val users = table[DBUser]("users")
   val geoinfos = table[DBGeoInformation]("geoinfos")
-  val socialnet = table[DBSocialNetwork]("socialnet")
+  val socialnets = table[DBSocialNetwork]("socialnets")
   val appointments = table[DBAppointment]("appointments")
 }

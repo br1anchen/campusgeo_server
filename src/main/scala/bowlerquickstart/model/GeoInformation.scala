@@ -33,7 +33,7 @@ object GeoTypes{
   val end = End
   val single = Single
   
-  val list = List(start,process,end)
+  val list = List(start,process,end,single)
   
   def getTypeById(id:Int) = list.filter(gt => gt.id == id).first
   

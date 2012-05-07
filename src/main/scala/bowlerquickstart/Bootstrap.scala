@@ -14,6 +14,7 @@ import bowlerquickstart.model.GeoInformation
 import bowlerquickstart.model.GeoInformation
 import bowlerquickstart.model.SocialNetwork
 import bowlerquickstart.model.Appointment
+import bowlerquickstart.model.UserRequest
 
 /**
  * This class acts as the starting point and bootstrap point for our application
@@ -124,4 +125,13 @@ trait AppointmentStore
   def updateAppointment(appointment:Appointment,oldTime:String) : Appointment
   def getAppointment(host:String,dater:String) : Seq[Appointment]
   def getAllAppointment(bindUser:String) : Seq[Appointment]
+}
+
+trait UserRequestStore
+{
+  def addUserRequest(request:UserRequest) : UserRequest
+  def deleteUserRequest(requestId:String)
+  def updateUserRequest(request:UserRequest) : UserRequest
+  def getAllRequests(goalUser:String) : Seq[UserRequest]
+  
 }

@@ -32,13 +32,13 @@ class DBTableStore {
 class DBUserStore extends UserStore{
   import Tables._
   implicit def db2user(user:DBUser) = 
-    new User(user.userName,
+    new User(user.username,
     		user.password,
     		user.role,
     		user.status)
   implicit def user2db(user:User) = 
     new DBUser(0,
-    		user.userName,
+    		user.username,
     		user.password,
     		user.role,
     		new Timestamp(new DateTime().getMillis()),
@@ -53,15 +53,15 @@ class DBUserStore extends UserStore{
   
   def deleteUser(username:String) = {
     inTransaction{
-      Tables.users.deleteWhere(user => user.userName === username)
+      Tables.users.deleteWhere(user => user.username === username)
     }
   }
   
   def updateUser(user:User) = {
     inTransaction{
       Tables.users.update(u => 
-        				where(u.userName === user.userName) 
-    		  			set(u.userName := user.userName,
+        				where(u.username === user.username) 
+    		  			set(u.username := user.username,
     		  			    u.password := user.password,
     		  			    u.role := user.role,
     		  			    u.status := user.status)
@@ -72,7 +72,7 @@ class DBUserStore extends UserStore{
   
   def checkUser(username:String,password:String) : Boolean = {
     inTransaction{
-      val usernameResult = Tables.users.where(u => u.userName === username)
+      val usernameResult = Tables.users.where(u => u.username === username)
       if(usernameResult.nonEmpty)
       {
         if(usernameResult.first.password == password){true}else{false}
@@ -80,6 +80,13 @@ class DBUserStore extends UserStore{
       else{
         false
       }
+    }
+  }
+  
+  def getAllUsers() : Seq[User] = {
+    inTransaction{
+      val userList = from(Tables.users)(u => select(u) orderBy(u.created desc))
+      userList.map(u => db2user(u)).toSeq
     }
   }
 }
@@ -130,6 +137,13 @@ class DBGeoInformationStore extends GeoInformationStore{
         						select(g)
         						orderBy(g.created desc)).first
       db2geoinfo(geoinfo)
+    }
+  }
+  
+  def getAllGeos() : Seq[GeoInformation] = {
+    inTransaction{
+      val geoList = from(Tables.geoinfos)(g => select(g) orderBy(g.created desc))
+      geoList.map(g => db2geoinfo(g)).toSeq
     }
   }
 }
@@ -307,7 +321,7 @@ class DBUserRequestStore extends UserRequestStore{
 }
 
 case class DBUser(
-    val id:Long, val userName:String, 
+    val id:Long, val username:String, 
     val password:String, val role:String,
 	val created:Timestamp, val status:Boolean) extends KeyedEntity[Long] {
   def this() = this(0, "", "", "",new Timestamp(new Date().getTime()),true)

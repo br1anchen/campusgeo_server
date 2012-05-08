@@ -19,8 +19,12 @@ import bowlerquickstart.model.UserRequest
 /**
  * This class acts as the starting point and bootstrap point for our application
  */
-class Bootstrap(userStore: UserStore = new DBUserStore){
-  def this() = this(new DBUserStore)
+class Bootstrap(userStore : UserStore = new DBUserStore,
+    			geoInformationStore : GeoInformationStore = new DBGeoInformationStore,
+    			socialNetworkStore : SocialNetworkStore = new DBSocialNetworkStore,
+    			appointmentStore : AppointmentStore = new DBAppointmentStore,
+    			userRequestStore : UserRequestStore = new DBUserRequestStore){
+  def this() = this(new DBUserStore,new DBGeoInformationStore, new DBSocialNetworkStore, new DBAppointmentStore, new DBUserRequestStore)
   // parent layout
   val parentLayout = DefaultLayout("default", "doLayout", None, None)
 
@@ -29,12 +33,13 @@ class Bootstrap(userStore: UserStore = new DBUserStore){
 
 
   // I think we're ready to start and instantiate our Controller.
-  val adminController = new AdminController(userStore) with BasicAuth {
+  val adminController = new AdminController(userStore,geoInformationStore,socialNetworkStore,appointmentStore,userRequestStore) with BasicAuth {
     val user :String = "campusgeo"
     val password :String = "admintest" 
   }
   val userController = new UserController(userStore)
-	
+  val geoController = new GeoController(geoInformationStore)
+  val socialController = new SocialController(socialNetworkStore)
 	
   // allow template reload during development - remove these lines in production for better performance
   org.bowlerframework.view.scalate.RenderEngine.getEngine.allowCaching = false
@@ -100,6 +105,7 @@ trait UserStore
   def deleteUser(username:String)
   def updateUser(user:User) : User
   def checkUser(username:String,password:String) : Boolean
+  def getAllUsers() : Seq[User]
 }
 
 trait GeoInformationStore
@@ -107,6 +113,7 @@ trait GeoInformationStore
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def updateGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def checkGeoInfo(bindUser:String) : GeoInformation
+  def getAllGeos() : Seq[GeoInformation]
 }
 
 trait SocialNetworkStore

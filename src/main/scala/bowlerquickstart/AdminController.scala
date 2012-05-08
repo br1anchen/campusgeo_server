@@ -14,7 +14,7 @@ import org.bowlerframework.squeryl.SquerylController
  * - Renderable: allows you to render View Model objects.
  */
 
-class AdminController(userStore:UserStore) extends SquerylController with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes {
+class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStore,socialNetworkStore:SocialNetworkStore,appointmentStore:AppointmentStore,userRequestStore:UserRequestStore) extends SquerylController with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes {
 
 
   // simple, no args render, just renders the root view of /views/GET/index (or http 204 for JSON)
@@ -22,4 +22,10 @@ class AdminController(userStore:UserStore) extends SquerylController with Parame
 // in this case /views/GET/index. The ending of the template file (mustache, ssp, jade or scaml) will be auto-resolved in the order mentioned here.
 // for named params, the ":" of the Scalatra route definition will be replaced by "_" when looking up on the classpath.
   def `GET /admin` = render
+  
+  def `GET /admin/user` = render
+  
+  def `GET /admin/user/new` = render
+  
+  def `GET /admin/user/edit` = render
 }

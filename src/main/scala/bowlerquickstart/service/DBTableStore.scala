@@ -35,7 +35,7 @@ class DBUserStore extends UserStore{
     new User(user.username,
     		user.password,
     		user.role,
-    		user.status)
+    		user.status.toString())
   implicit def user2db(user:User) = 
     new DBUser(0,
     		user.username,
@@ -58,13 +58,14 @@ class DBUserStore extends UserStore{
   }
   
   def updateUser(user:User) = {
+    val userStatus:Boolean = if(user.status == "true"){true}else{false}
     inTransaction{
       Tables.users.update(u => 
         				where(u.username === user.username) 
     		  			set(u.username := user.username,
     		  			    u.password := user.password,
     		  			    u.role := user.role,
-    		  			    u.status := user.status)
+    		  			    u.status := userStatus)
     		  )
     }
      user
@@ -174,23 +175,25 @@ class DBSocialNetworkStore extends SocialNetworkStore{
     }
   }
   def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork ={
+    val socialStatus : Boolean = if(socialnet.status == "true"){true}else{false}
     inTransaction{
       Tables.socialnets.update(sn =>
     		  					where(sn.host === socialnet.host and sn.friend === socialnet.friend)
     		  					set(sn.socialType := SocialTypes.getTypeById(socialnet.socialType).toString(),
-    		  					    sn.created := new Timestamp(new Date().getTime()))
+    		  					    sn.created := new Timestamp(new Date().getTime()),
+    		  					    sn.status := socialStatus)
     		  				)
     }
     socialnet
   }
   def checkSocialNet(host:String,friend:String) : Boolean ={
-    val socialnetResult = Tables.socialnets.where(sn => sn.host === host and sn.friend === friend)
+    val socialnetResult = Tables.socialnets.where(sn => sn.host === host and sn.friend === friend and sn.status === true)
     if(socialnetResult.nonEmpty){true}else{false}
   }
   
   def getAllSocialNet(host:String) : Seq[SocialNetwork] ={
     inTransaction{
-      val socialList = from(Tables.socialnets)(sn => where(sn.host === host) select(sn) orderBy(sn.created asc))
+      val socialList = from(Tables.socialnets)(sn => where(sn.host === host and sn.status === true) select(sn) orderBy(sn.created asc))
       socialList.map(sn => db2socialnet(sn)).toSeq
     }
   }
@@ -229,6 +232,7 @@ class DBAppointmentStore extends AppointmentStore{
   }
   
   def updateAppointment(appointment:Appointment,oldTime:String) : Appointment ={
+    val datingStatus : Boolean = if(appointment.status == "true"){true}else{false}
     val dateString:String = appointment.date + " " + appointment.time
     val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
     val newDate:DateTime = formatter.parseDateTime(dateString)
@@ -236,7 +240,8 @@ class DBAppointmentStore extends AppointmentStore{
     inTransaction{
       Tables.appointments.update(ap => 
         						where(ap.host === appointment.host and ap.dater === appointment.dater and ap.time === new Timestamp(oldDate.getMillis()))
-        						set(ap.time := new Timestamp(newDate.getMillis()))
+        						set(ap.time := new Timestamp(newDate.getMillis()),
+        						    ap.status := datingStatus)
         						)
     }
     appointment
@@ -244,7 +249,7 @@ class DBAppointmentStore extends AppointmentStore{
   
   def getAppointment(host:String,dater:String) : Seq[Appointment] ={
     inTransaction{
-      val datings = from(Tables.appointments)(ap => where(ap.host === host and ap.dater === dater) select(ap) orderBy(ap.time asc)).toSeq
+      val datings = from(Tables.appointments)(ap => where(ap.host === host and ap.dater === dater and ap.status === true) select(ap) orderBy(ap.time asc)).toSeq
       val nextdatings = datings.filter(d => 
         if(d.time.compareTo(new Date()) >= 0){
         true
@@ -300,13 +305,14 @@ class DBUserRequestStore extends UserRequestStore{
   }
   
   def updateUserRequest(request:UserRequest) : UserRequest = {
+    val requestStatus : Boolean = if(request.status == "true"){true}else{false}
     inTransaction{
       Tables.userrequests.update(req => 
         						where(req.id.toString() === request.id)
         						set(req.requestUser := request.requestUser,
         						    req.goalUser := request.goalUser,
         						    req.reqType := RequestTypes.getTypeById(request.reqType).toString(),
-        						    req.status := true,
+        						    req.status := requestStatus,
         						    req.created := new Timestamp(new Date().getTime()))
         						)
     }
@@ -314,7 +320,7 @@ class DBUserRequestStore extends UserRequestStore{
   }
   def getAllRequests(goalUser:String) : Seq[UserRequest] = {
     inTransaction{
-      val requestList = from(Tables.userrequests)(req => where(req.goalUser === goalUser) select(req) orderBy(req.created asc))
+      val requestList = from(Tables.userrequests)(req => where(req.goalUser === goalUser and req.status === false) select(req) orderBy(req.created asc))
       requestList.map(req => db2UserRequest(req)).toSeq
     }
   }

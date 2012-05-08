@@ -1,1 +1,10 @@
-this is admin user index page
+<a href="/admin/user/new">New User</a>
+
+{{#users}}
+	<div>
+		username:{{username}}<br />
+		password:{{password}}<br />
+		role:{{role}}<br />
+		status:{{status}}<br />
+	</div>
+{{/users}}

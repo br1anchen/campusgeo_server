@@ -4,6 +4,8 @@ import org.bowlerframework.controller.{Controller,FunctionNameConventionRoutes}
 import org.bowlerframework.model.{ ParameterMapper, Validations}
 import org.bowlerframework.view.{Renderable}
 import org.bowlerframework.squeryl.SquerylController
+import bowlerquickstart.model.User
+import org.bowlerframework.RequestScope
 
 /**
  * 
@@ -23,9 +25,17 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
 // for named params, the ":" of the Scalatra route definition will be replaced by "_" when looking up on the classpath.
   def `GET /admin` = render
   
-  def `GET /admin/user` = render
+  def `GET /admin/user` = {
+    val users = userStore.getAllUsers();
+    render(users)
+  }
   
   def `GET /admin/user/new` = render
+  
+  def `POST /admin/user/new`(user:User) = {
+    userStore.addUser(user)
+    RequestScope.response.sendRedirect("/admin/user")
+  }
   
   def `GET /admin/user/edit` = render
 }

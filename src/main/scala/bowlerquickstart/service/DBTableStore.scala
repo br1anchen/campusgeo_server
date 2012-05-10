@@ -84,6 +84,14 @@ class DBUserStore extends UserStore{
     }
   }
   
+  def getUser(username:String) : User=
+  {
+    inTransaction{
+      val newUser = from(Tables.users)(u =>where(u.username === username) select(u)).first
+      db2user(newUser)
+    }
+  }
+  
   def getAllUsers() : Seq[User] = {
     inTransaction{
       val userList = from(Tables.users)(u => select(u) orderBy(u.created desc))

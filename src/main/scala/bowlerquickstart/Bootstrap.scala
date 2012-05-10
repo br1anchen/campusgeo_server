@@ -105,6 +105,7 @@ trait UserStore
   def deleteUser(username:String)
   def updateUser(user:User) : User
   def checkUser(username:String,password:String) : Boolean
+  def getUser(username:String) : User
   def getAllUsers() : Seq[User]
 }
 

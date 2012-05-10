@@ -37,5 +37,13 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     RequestScope.response.sendRedirect("/admin/user")
   }
   
-  def `GET /admin/user/edit` = render
+  def `GET /admin/user/:username/factory`(username:String) = {
+    val user = userStore.getUser(username)
+    render(user)
+  }
+  
+  def `POST /admin/user/:username/factory`(user:User) = {
+    userStore.updateUser(user)
+    RequestScope.response.sendRedirect("/admin/user")
+  }
 }

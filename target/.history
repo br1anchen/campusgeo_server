@@ -47,3 +47,5 @@ container:start
 exit
 container:start
 exit
+container:start
+exit

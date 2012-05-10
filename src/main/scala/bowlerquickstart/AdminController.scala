@@ -46,4 +46,9 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     userStore.updateUser(user)
     RequestScope.response.sendRedirect("/admin/user")
   }
+  
+  def `GET /admin/user/:username/trash`(username:String) = {
+    userStore.deleteUser(username)
+    RequestScope.response.sendRedirect("/admin/user")
+  }
 }

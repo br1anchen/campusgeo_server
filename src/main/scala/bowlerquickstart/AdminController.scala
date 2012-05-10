@@ -51,4 +51,11 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     userStore.deleteUser(username)
     RequestScope.response.sendRedirect("/admin/user")
   }
+  
+  def `GET /admin/social` = {
+    val socialNets = socialNetworkStore.getAllSocials()
+    render(socialNets)
+  }
+  
+  def `GET /admin/social/new`= render
 }

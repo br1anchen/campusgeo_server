@@ -159,7 +159,8 @@ class DBGeoInformationStore extends GeoInformationStore{
 
 class DBSocialNetworkStore extends SocialNetworkStore{
   import Tables._
-  implicit def db2socialnet(socialnet:DBSocialNetwork) = new SocialNetwork(socialnet.host,
+  implicit def db2socialnet(socialnet:DBSocialNetwork) = new SocialNetwork(socialnet.id.toString(),
+		  																socialnet.host,
 		  																socialnet.friend,
 		  																SocialTypes.getTypeByString(socialnet.toString()).id,
 		  																socialnet.status.toString())
@@ -174,6 +175,13 @@ class DBSocialNetworkStore extends SocialNetworkStore{
      inTransaction{
       val newSocialNet = Tables.socialnets.insert(socialnet2db(socialnet))
       db2socialnet(newSocialNet)
+    }
+  }
+  
+  def getSocial(id : String) : SocialNetwork = {
+    inTransaction{
+      val social = from(Tables.socialnets)(sn => where(sn.id.toString() === id) select(sn)).first
+      db2socialnet(social)
     }
   }
   
@@ -202,6 +210,13 @@ class DBSocialNetworkStore extends SocialNetworkStore{
   def getAllSocialNet(host:String) : Seq[SocialNetwork] ={
     inTransaction{
       val socialList = from(Tables.socialnets)(sn => where(sn.host === host and sn.status === true) select(sn) orderBy(sn.created asc))
+      socialList.map(sn => db2socialnet(sn)).toSeq
+    }
+  }
+  
+  def getAllSocials() : Seq[SocialNetwork] = {
+    inTransaction{
+      val socialList = from(Tables.socialnets)(sn => where(sn.status === true) select(sn) orderBy(sn.created asc))
       socialList.map(sn => db2socialnet(sn)).toSeq
     }
   }

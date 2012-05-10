@@ -44,7 +44,7 @@
 [0m[[0mdebug[0m] [0m	/Volumes/Database/Users/BBC/Documents/ios workspace/demo/CampusGeo_Server/src/main/scala/bowlerquickstart/SocialController.scala[0m
 [0m[[0mdebug[0m] [0m	/Volumes/Database/Users/BBC/Documents/ios workspace/demo/CampusGeo_Server/src/main/scala/bowlerquickstart/UserController.scala[0m
 [0m[[0mdebug[0m] [0m	/Volumes/Database/Users/BBC/Documents/ios workspace/demo/CampusGeo_Server/src/main/scala/bowlerquickstart/service/DBTableStore.scala[0m
-[0m[[33mwarn[0m] [0mthere were 3 deprecation warnings; re-run with -deprecation for details[0m
+[0m[[33mwarn[0m] [0mthere were 4 deprecation warnings; re-run with -deprecation for details[0m
 [0m[[33mwarn[0m] [0mone warning found[0m
 [0m[[0mdebug[0m] [0m	Invalidated direct: Set()[0m
 [0m[[0mdebug[0m] [0mIncrementally invalidated: Set()[0m

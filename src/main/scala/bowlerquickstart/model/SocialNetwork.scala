@@ -1,6 +1,6 @@
 package bowlerquickstart.model
 
-case class SocialNetwork(val id:String,val host:String,val friend:String, val socialType:Int, val status:String)
+case class SocialNetwork(val id:String = "0",val host:String,val friend:String, val socialType:Int, val status:String)
 
 trait SocialType{
   def id : Int

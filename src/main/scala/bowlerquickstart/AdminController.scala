@@ -7,6 +7,7 @@ import org.bowlerframework.squeryl.SquerylController
 import bowlerquickstart.model.User
 import org.bowlerframework.RequestScope
 import bowlerquickstart.model.SocialNetwork
+import bowlerquickstart.model.SocialNetwork
 
 /**
  * 
@@ -62,6 +63,16 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
   
   def `POST /admin/social/new`(socialNetwork:SocialNetwork) ={
     socialNetworkStore.addSocialNet(socialNetwork)
+    RequestScope.response.sendRedirect("/admin/social")
+  }
+  
+  def `GET /admin/social/:socialId/factory`(socialId:String)  = {
+    val socialNet = socialNetworkStore.getSocial(socialId)
+    render(socialNet)
+  }
+  
+  def `POST /admin/social/:socialId/factory`(socialNetwork:SocialNetwork) = {
+    socialNetworkStore.updateSocialNet(socialNetwork)
     RequestScope.response.sendRedirect("/admin/social")
   }
 }

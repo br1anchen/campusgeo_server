@@ -1,6 +1,6 @@
 package bowlerquickstart.model
 
-case class GeoInformation(val latitude:String, val longitude:String, val bindUser:String, val date:String, val time:String, val geoType:Int)
+case class GeoInformation(val id:String="0", val latitude:String, val longitude:String, val bindUser:String, val date:String, val time:String, val geoType:Int)
 
 trait GeoType{
   def id : Int

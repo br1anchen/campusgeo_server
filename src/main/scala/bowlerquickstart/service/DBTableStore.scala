@@ -24,6 +24,7 @@ import bowlerquickstart.UserRequestStore
 import bowlerquickstart.model.UserRequest
 import bowlerquickstart.model.UserRequest
 import bowlerquickstart.model.RequestTypes
+import scala.util.Random
 
 class DBTableStore {
   import Tables._
@@ -103,7 +104,8 @@ class DBUserStore extends UserStore{
 class DBGeoInformationStore extends GeoInformationStore{
   import Tables._
   implicit def db2geoinfo(geoinfo:DBGeoInformation) =
-    new GeoInformation(geoinfo.latitude,
+    new GeoInformation(geoinfo.name,
+    				geoinfo.latitude,
     				geoinfo.longitude,
     				geoinfo.bindUser,
     				new SimpleDateFormat("yyyy-MM-dd").format(geoinfo.created),
@@ -111,6 +113,7 @@ class DBGeoInformationStore extends GeoInformationStore{
     				GeoTypes.getTypeByString(geoinfo.geoType).id)
   implicit def geoinfo2db(geoinfo:GeoInformation) = 
     new DBGeoInformation(0,
+    				Random.nextString(7),
     				geoinfo.latitude,
     				geoinfo.longitude,
     				geoinfo.bindUser,
@@ -159,12 +162,13 @@ class DBGeoInformationStore extends GeoInformationStore{
 
 class DBSocialNetworkStore extends SocialNetworkStore{
   import Tables._
-  implicit def db2socialnet(socialnet:DBSocialNetwork) = new SocialNetwork(socialnet.id.toString(),
+  implicit def db2socialnet(socialnet:DBSocialNetwork) = new SocialNetwork(socialnet.name,
 		  																socialnet.host,
 		  																socialnet.friend,
-		  																SocialTypes.getTypeByString(socialnet.toString()).id,
+		  																SocialTypes.getTypeByString(socialnet.socialType).id,
 		  																socialnet.status.toString())
   implicit def socialnet2db(socialnet:SocialNetwork) = new DBSocialNetwork(0,
+		  																Random.nextString(7),
 		  																socialnet.host,
 		  																socialnet.friend,
 		  																SocialTypes.getTypeById(socialnet.socialType).toString,
@@ -180,8 +184,8 @@ class DBSocialNetworkStore extends SocialNetworkStore{
   
   def getSocial(id : String) : SocialNetwork = {
     inTransaction{
-      val social = from(Tables.socialnets)(sn => where(sn.id.toString() === id) select(sn)).first
-      db2socialnet(social)
+      val newSocial = from(Tables.socialnets)(sn => where(sn.name === id) select(sn)).first
+      db2socialnet(newSocial)
     }
   }
   
@@ -224,7 +228,8 @@ class DBSocialNetworkStore extends SocialNetworkStore{
 
 class DBAppointmentStore extends AppointmentStore{
   import Tables._
-  implicit def db2dating(dating:DBAppointment) = new Appointment(dating.host,
+  implicit def db2dating(dating:DBAppointment) = new Appointment(dating.name,
+		  														dating.host,
 		  														dating.dater,
 		  														new SimpleDateFormat("yyyy-MM-dd").format(dating.time),
 		  														new SimpleDateFormat("HH:mm").format(dating.time),
@@ -232,6 +237,7 @@ class DBAppointmentStore extends AppointmentStore{
 		  														dating.longitude,
 		  														dating.status.toString())
   implicit def dating2db(dating:Appointment) = new DBAppointment(0,
+		  														Random.nextString(7),
 		  														dating.host,
 		  														dating.dater,
 		  														new Timestamp(new Date().getTime()),
@@ -300,7 +306,7 @@ class DBAppointmentStore extends AppointmentStore{
 class DBUserRequestStore extends UserRequestStore{
 	import Tables._
 	
-	implicit def db2UserRequest(request : DBUserRequest) = new UserRequest(request.id.toString(),
+	implicit def db2UserRequest(request : DBUserRequest) = new UserRequest(request.name,
 																		request.requestUser,
 																		request.goalUser,
 																		RequestTypes.getTypeByString(request.reqType).id,
@@ -308,6 +314,7 @@ class DBUserRequestStore extends UserRequestStore{
 																		new SimpleDateFormat("yyyy-MM-dd").format(request.created),
 																		new SimpleDateFormat("HH:mm").format(request.created))
 	implicit def userRequest2db(request : UserRequest) = new DBUserRequest(0,
+																		Random.nextString(7),
 																		request.requestUser,
 																		request.goalUser,
 																		RequestTypes.getTypeById(request.reqType).toString(),
@@ -323,7 +330,7 @@ class DBUserRequestStore extends UserRequestStore{
 	
   def deleteUserRequest(requestId:String) = {
     inTransaction{
-      Tables.userrequests.deleteWhere(req => req.id.toString() === requestId)
+      Tables.userrequests.deleteWhere(req => req.name === requestId)
     }
   }
   
@@ -331,7 +338,7 @@ class DBUserRequestStore extends UserRequestStore{
     val requestStatus : Boolean = if(request.status == "true"){true}else{false}
     inTransaction{
       Tables.userrequests.update(req => 
-        						where(req.id.toString() === request.id)
+        						where(req.name === request.id)
         						set(req.requestUser := request.requestUser,
         						    req.goalUser := request.goalUser,
         						    req.reqType := RequestTypes.getTypeById(request.reqType).toString(),
@@ -357,31 +364,31 @@ case class DBUser(
 }
 
 case class DBGeoInformation(
-    val id:Long, val latitude:String,
+    val id:Long, val name:String,val latitude:String,
     val longitude:String, val bindUser:String,
     val created:Timestamp, val geoType:String) extends KeyedEntity[Long]{
-  def this() = this(0,"","","",new Timestamp(new Date().getTime()),"")
+  def this() = this(0,"","","","",new Timestamp(new Date().getTime()),"")
 }
 
 case class DBSocialNetwork(
-    val id:Long, val host:String,
+    val id:Long, val name:String, val host:String,
     val friend:String, val socialType:String,
     val status:Boolean, val created:Timestamp) extends KeyedEntity[Long]{
-  def this() = this(0,"","","",false,new Timestamp(new Date().getTime()))
+  def this() = this(0,"","","","",false,new Timestamp(new Date().getTime()))
 }
 
 case class DBAppointment(
-    val id:Long, val host:String,
+    val id:Long, val name:String, val host:String,
     val dater:String, val time:Timestamp,
     val latitude:String, val longitude:String, val status:Boolean) extends KeyedEntity[Long]{
-  def this() = this(0,"","",new Timestamp(new Date().getTime()),"","",false)
+  def this() = this(0,"","","",new Timestamp(new Date().getTime()),"","",false)
 }
 
 case class DBUserRequest(
-    val id:Long, val requestUser:String,
+    val id:Long, val name:String,val requestUser:String,
     val goalUser:String, val reqType:String,
     val status:Boolean, val created:Timestamp) extends KeyedEntity[Long]{
-  def this() = this(0,"","","",true,new Timestamp(new Date().getTime()))
+  def this() = this(0,"","","","",true,new Timestamp(new Date().getTime()))
 }
 object Tables extends Schema{
   val users = table[DBUser]("users")

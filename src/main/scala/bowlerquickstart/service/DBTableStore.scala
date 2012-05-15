@@ -194,6 +194,13 @@ class DBSocialNetworkStore extends SocialNetworkStore{
       Tables.socialnets.deleteWhere(sn => (sn.host === host) and (sn.friend === friend))
     }
   }
+  
+  def deleteSocialNetById(socialId : String) ={
+    inTransaction{
+      Tables.socialnets.deleteWhere(sn => sn.name === socialId)
+    }
+  }
+  
   def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork ={
     val socialStatus : Boolean = if(socialnet.status == "true"){true}else{false}
     inTransaction{

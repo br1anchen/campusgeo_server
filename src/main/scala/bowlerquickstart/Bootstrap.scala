@@ -123,6 +123,7 @@ trait SocialNetworkStore
   def addSocialNet(socialnet:SocialNetwork) : SocialNetwork
   def getSocial(name : String) : SocialNetwork
   def deleteSocialNet(host:String,friend:String)
+  def deleteSocialNetById(socialId : String)
   def updateSocialNet(socialnet:SocialNetwork) : SocialNetwork
   def checkSocialNet(host:String,friend:String) : Boolean
   def getAllSocialNet(host:String) : Seq[SocialNetwork]

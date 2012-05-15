@@ -75,4 +75,9 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     socialNetworkStore.updateSocialNet(socialNetwork)
     RequestScope.response.sendRedirect("/admin/social")
   }
+  
+  def `GET /admin/social/:socialId/trash`(socialId:String) ={
+    socialNetworkStore.deleteSocialNetById(socialId)
+    RequestScope.response.sendRedirect("/admin/social")
+  }
 }

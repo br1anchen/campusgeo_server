@@ -17,11 +17,17 @@ object TeacherMate extends SocialType{
   override def toString = "teachermate"
 }
 
+object TeacherStudent extends SocialType{
+  override def id = 3
+  override def toString = "teacherstudent"
+}
+
 object SocialTypes{
   val studentmate = StudentMate
   val teachermate = TeacherMate
+  val teacherstudent = TeacherStudent
   
-  val list = List(studentmate,teachermate)
+  val list = List(studentmate,teachermate,teacherstudent)
   
   def getTypeById(id:Int) = list.filter(gt => gt.id == id).first
   
@@ -30,8 +36,10 @@ object SocialTypes{
       SocialTypes.studentmate
     }else if(strType == "teachermate"){
       SocialTypes.teachermate
+    }else if(strType == "teacherstudent"){
+      SocialTypes.teacherstudent
     }else{
-      SocialTypes.teachermate
+      SocialTypes.teacherstudent
     }
   }
 }

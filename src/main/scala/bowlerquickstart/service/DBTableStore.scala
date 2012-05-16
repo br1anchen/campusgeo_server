@@ -239,7 +239,7 @@ class DBAppointmentStore extends AppointmentStore{
 		  														dating.host,
 		  														dating.dater,
 		  														new SimpleDateFormat("yyyy-MM-dd").format(dating.time),
-		  														new SimpleDateFormat("HH:mm").format(dating.time),
+		  														new SimpleDateFormat("HH:mm:ss").format(dating.time),
 		  														dating.latitude,
 		  														dating.longitude,
 		  														dating.status.toString())
@@ -267,20 +267,28 @@ class DBAppointmentStore extends AppointmentStore{
     }
   }
   
-  def updateAppointment(appointment:Appointment,oldTime:String) : Appointment ={
+  def updateAppointment(appointment:Appointment,id:String) : Appointment ={
     val datingStatus : Boolean = if(appointment.status == "true"){true}else{false}
     val dateString:String = appointment.date + " " + appointment.time
     val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
     val newDate:DateTime = formatter.parseDateTime(dateString)
-    val oldDate:DateTime = formatter.parseDateTime(oldTime)
     inTransaction{
       Tables.appointments.update(ap => 
-        						where(ap.host === appointment.host and ap.dater === appointment.dater and ap.time === new Timestamp(oldDate.getMillis()))
+        						where(ap.name === id)
         						set(ap.time := new Timestamp(newDate.getMillis()),
+        						    ap.latitude := appointment.latitude,
+        						    ap.longitude := appointment.longitude,
         						    ap.status := datingStatus)
         						)
     }
     appointment
+  }
+  
+  def getAppointmentById(id : String) : Appointment = {
+    inTransaction{
+      val newdating = from(Tables.appointments)(ap => where(ap.name === id) select(ap)).first
+      db2dating(newdating)
+    }
   }
   
   def getAppointment(host:String,dater:String) : Seq[Appointment] ={
@@ -306,6 +314,13 @@ class DBAppointmentStore extends AppointmentStore{
         false
         })
       nextdatings.map(nd => db2dating(nd)).toSeq
+    }
+  }
+  
+  def getAllAppointments() : Seq[Appointment] = {
+    inTransaction{
+      val datingList = from(Tables.appointments)(ap => where(ap.status === true) select(ap) orderBy(ap.time asc))
+      datingList.map(ap => db2dating(ap)).toSeq
     }
   }
 }

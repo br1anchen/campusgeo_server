@@ -1,0 +1,15 @@
+<a href="/admin/dating/new">New Appointment</a>
+
+{{#appointments}}
+	<div>
+		host:{{host}}<br />
+		dater:{{dater}}<br />
+		date:{{date}}<br />
+		time:{{time}}<br />
+		latitude:{{latitude}}<br />
+		longitude:{{longitude}}<br />
+		status:{{status}}<br />
+		<a href="/admin/dating/{{id}}/factory">Edit</a>
+		<a href="/admin/dating/{{id}}/trash">Delete</a><br />
+	</div>
+{{/appointments}}

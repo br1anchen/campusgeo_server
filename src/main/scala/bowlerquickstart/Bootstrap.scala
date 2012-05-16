@@ -16,6 +16,7 @@ import bowlerquickstart.model.SocialNetwork
 import bowlerquickstart.model.Appointment
 import bowlerquickstart.model.UserRequest
 import model.SocialNetwork
+import bowlerquickstart.model.Appointment
 
 /**
  * This class acts as the starting point and bootstrap point for our application
@@ -133,10 +134,12 @@ trait SocialNetworkStore
 trait AppointmentStore
 {
   def addAppointment(appointment:Appointment) : Appointment
+  def getAppointmentById(id : String) : Appointment
   def deleteAppointment(host:String,dater:String,time:String)
-  def updateAppointment(appointment:Appointment,oldTime:String) : Appointment
+  def updateAppointment(appointment:Appointment,id:String) : Appointment
   def getAppointment(host:String,dater:String) : Seq[Appointment]
   def getAllAppointment(bindUser:String) : Seq[Appointment]
+  def getAllAppointments() : Seq[Appointment]
 }
 
 trait UserRequestStore

@@ -243,14 +243,20 @@ class DBAppointmentStore extends AppointmentStore{
 		  														dating.latitude,
 		  														dating.longitude,
 		  														dating.status.toString())
-  implicit def dating2db(dating:Appointment) = new DBAppointment(0,
-		  														Random.nextString(7),
-		  														dating.host,
-		  														dating.dater,
-		  														new Timestamp(new Date().getTime()),
-		  														dating.latitude,
-		  														dating.longitude,
-		  														if(dating.status == "true"){true}else{false})
+  implicit def dating2db(dating:Appointment) = {
+    val dateString:String = dating.date + " " + dating.time
+    val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+    val newDate:DateTime = formatter.parseDateTime(dateString)
+    new DBAppointment(0,
+    				Random.nextString(7),
+		  			dating.host,
+		  			dating.dater,
+		  			new Timestamp(newDate.getMillis()),
+		  			dating.latitude,
+		  			dating.longitude,
+		  			if(dating.status == "true"){true}else{false})
+  }
+		  														
   
   def addAppointment(appointment:Appointment) : Appointment ={
     inTransaction{
@@ -264,6 +270,12 @@ class DBAppointmentStore extends AppointmentStore{
     val newDate:DateTime = formatter.parseDateTime(time)
     inTransaction{
       Tables.appointments.deleteWhere(ap => (ap.host === host) and (ap.dater === ap.dater) and (ap.time === new Timestamp(newDate.getMillis())))
+    }
+  }
+  
+  def deleteAppointmentById(id:String) = {
+    inTransaction{
+      Tables.appointments.deleteWhere(ap => (ap.name === id))
     }
   }
   

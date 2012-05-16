@@ -104,4 +104,9 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     appointmentStore.updateAppointment(appointment,datingId)
     RequestScope.response.sendRedirect("/admin/dating")
   }
+  
+  def `GET /admin/dating/:datingId/trash`(datingId:String) = {
+    appointmentStore.deleteAppointmentById(datingId)
+    RequestScope.response.sendRedirect("/admin/dating")
+  }
 }

@@ -1,6 +1,6 @@
 package bowlerquickstart.model
 
-case class UserRequest(val id:String="0", val requestUser:String, val goalUser:String, val reqType:Int, val status:String, val date:String, val time:String)
+case class UserRequest(val id:String="0", val requestUser:String, val goalUser:String, val reqType:Int, val status:String, val date:String = null, val time:String = null)
 
 trait RequestType{
   def id : Int

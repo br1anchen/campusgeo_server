@@ -1,0 +1,14 @@
+<a href="/admin/request/new">New UserRequest</a>
+
+{{#userRequests}}
+	<div>
+		requestUser:{{requestUser}}<br />
+		goalUser:{{goalUser}}<br />
+		reqType:{{reqType}}<br />
+		date:{{date}}<br />
+		time:{{time}}<br />
+		status:{{status}}<br />
+		<a href="/admin/request/{{id}}/factory">Edit</a>
+		<a href="/admin/request/{{id}}/trash">Delete</a><br />
+	</div>
+{{/userRequests}}

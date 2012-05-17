@@ -10,6 +10,7 @@ import bowlerquickstart.model.SocialNetwork
 import bowlerquickstart.model.SocialNetwork
 import bowlerquickstart.model.Appointment
 import bowlerquickstart.model.Appointment
+import bowlerquickstart.model.UserRequest
 
 /**
  * 
@@ -108,5 +109,32 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
   def `GET /admin/dating/:datingId/trash`(datingId:String) = {
     appointmentStore.deleteAppointmentById(datingId)
     RequestScope.response.sendRedirect("/admin/dating")
+  }
+  
+  def `GET /admin/request` = {
+    val requests = userRequestStore.getAllUserRequests()
+    render(requests)
+  }
+  
+  def `GET /admin/request/new` = render
+  
+  def `POST /admin/request/new`(request:UserRequest) = {
+    userRequestStore.addUserRequest(request)
+    RequestScope.response.sendRedirect("/admin/request")
+  }
+  
+  def `GET /admin/request/:requestId/factory`(requestId:String) = {
+    val request = userRequestStore.getUserRequestById(requestId)
+    render(request)
+  }
+  
+  def `POST /admin/request/:requestId/factory`(request:UserRequest,requestId:String) = {
+    userRequestStore.updateUserRequest(request,requestId)
+    RequestScope.response.sendRedirect("/admin/request")
+  }
+  
+  def `GET /admin/request/:requestId/trash`(requestId:String) = {
+    userRequestStore.deleteUserRequest(requestId)
+    RequestScope.response.sendRedirect("/admin/request")
   }
 }

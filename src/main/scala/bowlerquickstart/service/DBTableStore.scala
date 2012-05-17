@@ -227,7 +227,7 @@ class DBSocialNetworkStore extends SocialNetworkStore{
   
   def getAllSocials() : Seq[SocialNetwork] = {
     inTransaction{
-      val socialList = from(Tables.socialnets)(sn => where(sn.status === true) select(sn) orderBy(sn.created asc))
+      val socialList = from(Tables.socialnets)(sn => select(sn) orderBy(sn.created asc))
       socialList.map(sn => db2socialnet(sn)).toSeq
     }
   }
@@ -331,7 +331,7 @@ class DBAppointmentStore extends AppointmentStore{
   
   def getAllAppointments() : Seq[Appointment] = {
     inTransaction{
-      val datingList = from(Tables.appointments)(ap => where(ap.status === true) select(ap) orderBy(ap.time asc))
+      val datingList = from(Tables.appointments)(ap => select(ap) orderBy(ap.time asc))
       datingList.map(ap => db2dating(ap)).toSeq
     }
   }
@@ -362,17 +362,24 @@ class DBUserRequestStore extends UserRequestStore{
 	  }
 	}
 	
+  def getUserRequestById(id:String) : UserRequest = {
+    inTransaction{
+      val newRequest = from(Tables.userrequests)(req => where(req.name === id) select(req)).first
+      db2UserRequest(newRequest)
+    }
+  }
+  
   def deleteUserRequest(requestId:String) = {
     inTransaction{
       Tables.userrequests.deleteWhere(req => req.name === requestId)
     }
   }
   
-  def updateUserRequest(request:UserRequest) : UserRequest = {
+  def updateUserRequest(request:UserRequest,requestId:String) : UserRequest = {
     val requestStatus : Boolean = if(request.status == "true"){true}else{false}
     inTransaction{
       Tables.userrequests.update(req => 
-        						where(req.name === request.id)
+        						where(req.name === requestId)
         						set(req.requestUser := request.requestUser,
         						    req.goalUser := request.goalUser,
         						    req.reqType := RequestTypes.getTypeById(request.reqType).toString(),
@@ -382,9 +389,17 @@ class DBUserRequestStore extends UserRequestStore{
     }
     request
   }
+  
   def getAllRequests(goalUser:String) : Seq[UserRequest] = {
     inTransaction{
       val requestList = from(Tables.userrequests)(req => where(req.goalUser === goalUser and req.status === false) select(req) orderBy(req.created asc))
+      requestList.map(req => db2UserRequest(req)).toSeq
+    }
+  }
+  
+  def getAllUserRequests() : Seq[UserRequest] ={
+    inTransaction{
+      val requestList = from(Tables.userrequests)(req => select(req) orderBy(req.created asc))
       requestList.map(req => db2UserRequest(req)).toSeq
     }
   }

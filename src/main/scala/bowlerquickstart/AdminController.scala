@@ -11,6 +11,7 @@ import bowlerquickstart.model.SocialNetwork
 import bowlerquickstart.model.Appointment
 import bowlerquickstart.model.Appointment
 import bowlerquickstart.model.UserRequest
+import bowlerquickstart.model.GeoInformation
 
 /**
  * 
@@ -136,5 +137,17 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
   def `GET /admin/request/:requestId/trash`(requestId:String) = {
     userRequestStore.deleteUserRequest(requestId)
     RequestScope.response.sendRedirect("/admin/request")
+  }
+  
+  def `GET /admin/geo` = {
+    val geos = geoInformationStore.getAllGeos()
+    render(geos)
+  }
+  
+  def `GET /admin/geo/new` = render
+  
+  def `POST /admin/geo/new`(geo:GeoInformation) = {
+    geoInformationStore.addGeoInfo(geo)
+    RequestScope.response.sendRedirect("/admin/geo")
   }
 }

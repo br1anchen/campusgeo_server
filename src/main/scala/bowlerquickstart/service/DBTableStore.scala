@@ -111,15 +111,18 @@ class DBGeoInformationStore extends GeoInformationStore{
     				new SimpleDateFormat("yyyy-MM-dd").format(geoinfo.created),
     				new SimpleDateFormat("HH:mm").format(geoinfo.created),
     				GeoTypes.getTypeByString(geoinfo.geoType).id)
-  implicit def geoinfo2db(geoinfo:GeoInformation) = 
+  implicit def geoinfo2db(geoinfo:GeoInformation) = {
+    val dateString:String = geoinfo.date + " " + geoinfo.time
+    val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+    val newDate:DateTime = formatter.parseDateTime(dateString)
     new DBGeoInformation(0,
     				Random.nextString(7),
     				geoinfo.latitude,
     				geoinfo.longitude,
     				geoinfo.bindUser,
-    				new Timestamp(new DateTime().getMillis()),
+    				new Timestamp(newDate.getMillis()),
     				GeoTypes.getTypeById(geoinfo.geoType).toString())
-  
+  }
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation ={
     inTransaction{
       val newGeoInfo = Tables.geoinfos.insert(geoinfo2db(geoinfo))

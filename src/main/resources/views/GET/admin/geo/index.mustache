@@ -1,0 +1,14 @@
+<a href="/admin/geo/new">New GeoInformation</a>
+
+{{#geoInformations}}
+	<div>
+		latitude:{{latitude}}<br />
+		longitude:{{longitude}}<br />
+		bindUser:{{bindUser}}<br />
+		date:{{date}}<br />
+		time:{{time}}<br />
+		geoType:{{geoType}}<br />
+		<a href="/admin/geo/{{id}}/factory">Edit</a>
+		<a href="/admin/geo/{{id}}/trash">Delete</a><br />
+	</div>
+{{/geoInformations}}

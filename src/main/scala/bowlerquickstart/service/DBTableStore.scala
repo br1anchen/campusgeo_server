@@ -155,6 +155,19 @@ class DBGeoInformationStore extends GeoInformationStore{
     }
   }
   
+  def getGeoInfoById(geoId:String) : GeoInformation = {
+    inTransaction{
+      val newGeo = from(Tables.geoinfos)(g =>where(g.name === geoId) select(g)).first
+      db2geoinfo(newGeo)
+    }
+  }
+  
+  def deleteGeoInfoById(geoId:String) = {
+    inTransaction{
+      Tables.geoinfos.deleteWhere(g => g.name === geoId)
+    }
+  }
+  
   def getAllGeos() : Seq[GeoInformation] = {
     inTransaction{
       val geoList = from(Tables.geoinfos)(g => select(g) orderBy(g.created desc))

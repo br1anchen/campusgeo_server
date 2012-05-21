@@ -117,6 +117,8 @@ trait GeoInformationStore
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def updateGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def checkGeoInfo(bindUser:String) : GeoInformation
+  def getGeoInfoById(geoId:String) : GeoInformation
+  def deleteGeoInfoById(geoId:String)
   def getAllGeos() : Seq[GeoInformation]
 }
 

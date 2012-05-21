@@ -150,4 +150,19 @@ class AdminController(userStore:UserStore,geoInformationStore:GeoInformationStor
     geoInformationStore.addGeoInfo(geo)
     RequestScope.response.sendRedirect("/admin/geo")
   }
+  
+  def `GET /admin/geo/:geoId/factory`(geoId:String) = {
+    val geo = geoInformationStore.getGeoInfoById(geoId)
+    render(geo)
+  }
+  
+  def `POST /admin/geo/:geoId/factory`(geo:GeoInformation) = {
+    geoInformationStore.updateGeoInfo(geo)
+    RequestScope.response.sendRedirect("/admin/geo")
+  }
+  
+  def `GET /admin/geo/:geoId/trash`(geoId:String) = {
+    geoInformationStore.deleteGeoInfoById(geoId)
+    RequestScope.response.sendRedirect("/admin/geo")
+  }
 }

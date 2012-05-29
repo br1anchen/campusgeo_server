@@ -8,6 +8,7 @@ import org.bowlerframework.controller.FunctionNameConventionRoutes
 class UserController(userStore:UserStore) extends SquerylController with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes{
 	def `GET /user/login`(username:String,password:String) = {
 	  val result:Boolean = userStore.checkUser(username,password)
-	  if(result == true){render("true")}else{render("false")}
+	  if(result == true){render("{\"status\":\"true\"}")}else{render("{\"status\":\"false\"}")}
 	}
+	
 }

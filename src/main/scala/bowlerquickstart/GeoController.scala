@@ -6,5 +6,8 @@ import org.bowlerframework.view.Renderable
 import org.bowlerframework.controller.FunctionNameConventionRoutes
 
 class GeoController(geoInformationStore:GeoInformationStore) extends SquerylController with ParameterMapper with Validations with Renderable  with FunctionNameConventionRoutes{
-
+	def`GET /geo/current`(bindUser:String) = {
+	  val geoinfo = geoInformationStore.checkGeoInfo(bindUser)
+	  render(geoinfo)
+	}
 }

@@ -10,4 +10,9 @@ class GeoController(geoInformationStore:GeoInformationStore) extends SquerylCont
 	  val geoinfo = geoInformationStore.checkGeoInfo(bindUser)
 	  render(geoinfo)
 	}
+	
+	def `GET /geo/update`(username:String,latitude:String,longitude:String,geoType:Int) = {
+	  geoInformationStore.updateGeoInfoFromApp(username,latitude,longitude,geoType)
+	  render(true)
+	}
 }

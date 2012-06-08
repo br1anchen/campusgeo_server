@@ -145,6 +145,17 @@ class DBGeoInformationStore extends GeoInformationStore{
     geoinfo
   }
   
+  def updateGeoInfoFromApp(username:String,latitude:String,longitude:String,geoType:Int) = {
+    inTransaction{
+      Tables.geoinfos.update(g => 
+        					where(g.bindUser === username and g.geoType === GeoTypes.getTypeById(geoType).toString())
+    		  				set(g.latitude := latitude,
+    		  				    g.longitude := longitude,
+    		  				    g.created := new Timestamp(new DateTime().getMillis()))
+    		  				    )
+    }
+  }
+  
   def checkGeoInfo(bindUser:String) : GeoInformation ={
     inTransaction{
       val geoinfo = from(geoinfos)(g => 

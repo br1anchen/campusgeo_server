@@ -25,6 +25,7 @@ import bowlerquickstart.model.UserRequest
 import bowlerquickstart.model.UserRequest
 import bowlerquickstart.model.RequestTypes
 import scala.util.Random
+import java.util.UUID
 
 class DBTableStore {
   import Tables._
@@ -116,7 +117,7 @@ class DBGeoInformationStore extends GeoInformationStore{
     val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
     val newDate:DateTime = formatter.parseDateTime(dateString)
     new DBGeoInformation(0,
-    				Random.nextString(7),
+    				UUID.randomUUID().toString(),
     				geoinfo.latitude,
     				geoinfo.longitude,
     				geoinfo.bindUser,
@@ -195,7 +196,7 @@ class DBSocialNetworkStore extends SocialNetworkStore{
 		  																SocialTypes.getTypeByString(socialnet.socialType).id,
 		  																socialnet.status.toString())
   implicit def socialnet2db(socialnet:SocialNetwork) = new DBSocialNetwork(0,
-		  																Random.nextString(7),
+		  																UUID.randomUUID().toString(),
 		  																socialnet.host,
 		  																socialnet.friend,
 		  																SocialTypes.getTypeById(socialnet.socialType).toString,
@@ -275,7 +276,7 @@ class DBAppointmentStore extends AppointmentStore{
     val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
     val newDate:DateTime = formatter.parseDateTime(dateString)
     new DBAppointment(0,
-    				Random.nextString(7),
+    				UUID.randomUUID().toString(),
 		  			dating.host,
 		  			dating.dater,
 		  			new Timestamp(newDate.getMillis()),
@@ -343,6 +344,19 @@ class DBAppointmentStore extends AppointmentStore{
     }
   }
   
+  def getRequestAppointmentByName(host:String,dater:String) : Appointment = {
+    inTransaction{
+      val datings = from(Tables.appointments)(ap => where(ap.host === host and ap.dater === dater and ap.status === false) select(ap) orderBy(ap.time asc)).toSeq
+      val nextdatings = datings.filter(d => 
+        if(d.time.compareTo(new Date()) >= 0){
+        true
+        }else{
+        false
+        })
+      nextdatings.map(nd => db2dating(nd)).toSeq.first
+    }
+  }
+  
   def getAllAppointment(bindUser:String) : Seq[Appointment] ={
     inTransaction{
       val datings = from(Tables.appointments)(ap => where(ap.host === bindUser or ap.dater === bindUser) select(ap) orderBy(ap.time asc)).toSeq
@@ -375,7 +389,7 @@ class DBUserRequestStore extends UserRequestStore{
 																		new SimpleDateFormat("yyyy-MM-dd").format(request.created),
 																		new SimpleDateFormat("HH:mm").format(request.created))
 	implicit def userRequest2db(request : UserRequest) = new DBUserRequest(0,
-																		Random.nextString(7),
+																		UUID.randomUUID().toString(),
 																		request.requestUser,
 																		request.goalUser,
 																		RequestTypes.getTypeById(request.reqType).toString(),

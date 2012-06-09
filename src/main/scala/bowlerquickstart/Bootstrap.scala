@@ -43,7 +43,7 @@ class Bootstrap(userStore : UserStore = new DBUserStore,
   val userController = new UserController(userStore)
   val geoController = new GeoController(geoInformationStore)
   val socialController = new SocialController(socialNetworkStore)
-  val requestController = new RequestController(userRequestStore)
+  val requestController = new RequestController(userRequestStore,socialNetworkStore,appointmentStore)
   val datingController = new DatingController(appointmentStore)
 	
   // allow template reload during development - remove these lines in production for better performance
@@ -145,6 +145,7 @@ trait AppointmentStore
   def deleteAppointmentById(id:String)
   def updateAppointment(appointment:Appointment,id:String) : Appointment
   def getAppointment(host:String,dater:String) : Seq[Appointment]
+  def getRequestAppointmentByName(host:String,dater:String) : Appointment
   def getAllAppointment(bindUser:String) : Seq[Appointment]
   def getAllAppointments() : Seq[Appointment]
 }

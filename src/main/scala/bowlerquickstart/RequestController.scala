@@ -36,5 +36,7 @@ class RequestController(userRequestStore:UserRequestStore,socialNetworkStore:Soc
 	    val newSocial = new SocialNetwork("0",request.requestUser,request.goalUser,request.reqType,"true")
 	    socialNetworkStore.addSocialNet(newSocial)
 	  }
+	  
+	  render(newRequest)
 	}
 }

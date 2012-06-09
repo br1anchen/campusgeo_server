@@ -43,6 +43,8 @@ class Bootstrap(userStore : UserStore = new DBUserStore,
   val userController = new UserController(userStore)
   val geoController = new GeoController(geoInformationStore)
   val socialController = new SocialController(socialNetworkStore)
+  val requestController = new RequestController(userRequestStore)
+  val datingController = new DatingController(appointmentStore)
 	
   // allow template reload during development - remove these lines in production for better performance
   org.bowlerframework.view.scalate.RenderEngine.getEngine.allowCaching = false

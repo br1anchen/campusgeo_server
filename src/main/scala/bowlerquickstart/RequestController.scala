@@ -35,6 +35,8 @@ class RequestController(userRequestStore:UserRequestStore,socialNetworkStore:Soc
 	  {
 	    val newSocial = new SocialNetwork("0",request.requestUser,request.goalUser,request.reqType,"true")
 	    socialNetworkStore.addSocialNet(newSocial)
+	    val newReturnSocial = new SocialNetwork("0",request.goalUser,request.requestUser,request.reqType,"true")
+	    socialNetworkStore.addSocialNet(newReturnSocial)
 	  }
 	  
 	  render(userRequestStore.getUserRequestById(requestId))

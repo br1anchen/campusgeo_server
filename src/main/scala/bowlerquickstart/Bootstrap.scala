@@ -119,7 +119,7 @@ trait GeoInformationStore
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def updateGeoInfo(geoinfo:GeoInformation) : GeoInformation
   def updateGeoInfoFromApp(username:String,latitude:String,longitude:String,geoType:Int)
-  def checkGeoInfo(bindUser:String) : GeoInformation
+  def checkGeoInfo(bindUser:String) : Option[GeoInformation]
   def getGeoInfoById(geoId:String) : GeoInformation
   def deleteGeoInfoById(geoId:String)
   def getAllGeos() : Seq[GeoInformation]

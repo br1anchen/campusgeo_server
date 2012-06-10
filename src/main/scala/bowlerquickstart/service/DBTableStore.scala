@@ -157,13 +157,20 @@ class DBGeoInformationStore extends GeoInformationStore{
     }
   }
   
-  def checkGeoInfo(bindUser:String) : GeoInformation ={
+  def checkGeoInfo(bindUser:String) : Option[GeoInformation] ={
     inTransaction{
       val geoinfo = from(geoinfos)(g => 
         						where(g.bindUser === bindUser and g.geoType === GeoTypes.getTypeById(4).toString())
         						select(g)
-        						orderBy(g.created desc)).first
-      db2geoinfo(geoinfo)
+        						orderBy(g.created desc))
+      if(geoinfo.nonEmpty)
+      {
+        Some(db2geoinfo(geoinfo.first))
+      }else
+      {
+        None
+      }
+      
     }
   }
   

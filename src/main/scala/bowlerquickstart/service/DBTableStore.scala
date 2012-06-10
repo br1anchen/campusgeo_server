@@ -366,7 +366,7 @@ class DBAppointmentStore extends AppointmentStore{
   
   def getAllAppointment(bindUser:String) : Seq[Appointment] ={
     inTransaction{
-      val datings = from(Tables.appointments)(ap => where(ap.host === bindUser or ap.dater === bindUser) select(ap) orderBy(ap.time asc)).toSeq
+      val datings = from(Tables.appointments)(ap => where(ap.host === bindUser or ap.dater === bindUser and ap.status === true) select(ap) orderBy(ap.time asc)).toSeq
       val nextdatings = datings.filter(d => 
         if(d.time.compareTo(new Date()) >= 0){
         true

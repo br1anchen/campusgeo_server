@@ -16,6 +16,12 @@ class RequestController(userRequestStore:UserRequestStore,socialNetworkStore:Soc
 		render(userRequestStore.addUserRequest(newRequest))
 	}
 	
+	def `GET /request/dating`(host:String,dater:String,date:String,time:String,latitude:String,longitude:String) ={
+	  val newDating = appointmentStore.addAppointment(new Appointment("0",host,dater,date,time,latitude,longitude,"false"))
+	  val newRequest : UserRequest = new UserRequest("0",host,dater,0,"null","null")
+	  render(userRequestStore.addUserRequest(newRequest))
+	}
+		
 	def `GET /request/all`(goalUser:String) = {
 	  val requests = userRequestStore.getAllRequests(goalUser)
 	  render(requests)

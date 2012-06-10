@@ -37,6 +37,6 @@ class RequestController(userRequestStore:UserRequestStore,socialNetworkStore:Soc
 	    socialNetworkStore.addSocialNet(newSocial)
 	  }
 	  
-	  render(newRequest)
+	  render(userRequestStore.getUserRequestById(requestId))
 	}
 }

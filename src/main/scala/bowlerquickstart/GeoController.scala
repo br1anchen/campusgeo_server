@@ -27,4 +27,15 @@ class GeoController(geoInformationStore:GeoInformationStore) extends SquerylCont
 		 				render("create")
 	  }
 	}
+	
+	def `GET /geo/all`(key:String) = 
+	{
+	  if(key == "08124146")
+	  {
+	    val geos = geoInformationStore.getAllGeos();
+	    render(geos)
+	  }else{
+	    render(null)
+	  }
+	}
 }

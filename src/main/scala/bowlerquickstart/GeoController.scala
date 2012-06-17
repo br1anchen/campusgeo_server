@@ -18,12 +18,12 @@ class GeoController(geoInformationStore:GeoInformationStore) extends SquerylCont
 	  }
 	}
 	
-	def `GET /geo/update`(username:String,latitude:String,longitude:String,geoType:Int) = {
+	def `GET /geo/update`(username:String,latitude:String,longitude:String,geoType:Int,area:String) = {
 	  geoInformationStore.checkGeoInfo(username) match
 	  {
-	    case Some(g) => geoInformationStore.updateGeoInfoFromApp(username,latitude,longitude,geoType)
+	    case Some(g) => geoInformationStore.updateGeoInfoFromApp(username,latitude,longitude,geoType,area)
 	    				render("update")
-	    case None => geoInformationStore.addGeoInfo(new GeoInformation("0",latitude,longitude,username,new SimpleDateFormat("yyyy-MM-dd").format(new Timestamp(new DateTime().getMillis())),new SimpleDateFormat("HH:mm:ss").format(new Timestamp(new DateTime().getMillis())),geoType))
+	    case None => geoInformationStore.addGeoInfo(new GeoInformation("0",latitude,longitude,username,new SimpleDateFormat("yyyy-MM-dd").format(new Timestamp(new DateTime().getMillis())),new SimpleDateFormat("HH:mm:ss").format(new Timestamp(new DateTime().getMillis())),geoType,area))
 		 				render("create")
 	  }
 	}

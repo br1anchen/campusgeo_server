@@ -1,5 +1,5 @@
+<a href="/admin">Main Menu</a>
 <a href="/admin/geo/new">New GeoInformation</a>
-
 {{#geoInformations}}
 	<div>
 		latitude:{{latitude}}<br />
@@ -8,6 +8,7 @@
 		date:{{date}}<br />
 		time:{{time}}<br />
 		geoType:{{geoType}}<br />
+		area:{{area}}<br />
 		<a href="/admin/geo/{{id}}/factory">Edit</a>
 		<a href="/admin/geo/{{id}}/trash">Delete</a><br />
 	</div>

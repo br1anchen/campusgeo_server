@@ -111,7 +111,8 @@ class DBGeoInformationStore extends GeoInformationStore{
     				geoinfo.bindUser,
     				new SimpleDateFormat("yyyy-MM-dd").format(geoinfo.created),
     				new SimpleDateFormat("HH:mm").format(geoinfo.created),
-    				GeoTypes.getTypeByString(geoinfo.geoType).id)
+    				GeoTypes.getTypeByString(geoinfo.geoType).id,
+    				geoinfo.area)
   implicit def geoinfo2db(geoinfo:GeoInformation) = {
     val dateString:String = geoinfo.date + " " + geoinfo.time
     val formatter:DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
@@ -122,7 +123,8 @@ class DBGeoInformationStore extends GeoInformationStore{
     				geoinfo.longitude,
     				geoinfo.bindUser,
     				new Timestamp(newDate.getMillis()),
-    				GeoTypes.getTypeById(geoinfo.geoType).toString())
+    				GeoTypes.getTypeById(geoinfo.geoType).toString(),
+    				geoinfo.area)
   }
   def addGeoInfo(geoinfo:GeoInformation) : GeoInformation ={
     inTransaction{
@@ -140,19 +142,21 @@ class DBGeoInformationStore extends GeoInformationStore{
         					where(g.bindUser === geoinfo.bindUser and g.geoType === GeoTypes.getTypeById(4).toString())
     		  				set(g.latitude := geoinfo.latitude,
     		  				    g.longitude := geoinfo.longitude,
-    		  				    g.created := new Timestamp(newDate.getMillis()))
+    		  				    g.created := new Timestamp(newDate.getMillis()),
+    		  				    g.area := geoinfo.area)
     		  				    )
     }
     geoinfo
   }
   
-  def updateGeoInfoFromApp(username:String,latitude:String,longitude:String,geoType:Int) = {
+  def updateGeoInfoFromApp(username:String,latitude:String,longitude:String,geoType:Int,area:String) = {
     inTransaction{
       Tables.geoinfos.update(g => 
         					where(g.bindUser === username and g.geoType === GeoTypes.getTypeById(geoType).toString())
     		  				set(g.latitude := latitude,
     		  				    g.longitude := longitude,
-    		  				    g.created := new Timestamp(new DateTime().getMillis()))
+    		  				    g.created := new Timestamp(new DateTime().getMillis()),
+    		  				    g.area := area)
     		  				    )
     }
   }
@@ -463,8 +467,8 @@ case class DBUser(
 case class DBGeoInformation(
     val id:Long, val name:String,val latitude:String,
     val longitude:String, val bindUser:String,
-    val created:Timestamp, val geoType:String) extends KeyedEntity[Long]{
-  def this() = this(0,"","","","",new Timestamp(new Date().getTime()),"")
+    val created:Timestamp, val geoType:String,val area:String) extends KeyedEntity[Long]{
+  def this() = this(0,"","","","",new Timestamp(new Date().getTime()),"","")
 }
 
 case class DBSocialNetwork(
